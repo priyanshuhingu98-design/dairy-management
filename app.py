@@ -21,6 +21,8 @@ from math import ceil
 load_dotenv('.env') if os.path.exists('.env') else None
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI', 'sqlite:///data.db')
+
 
 @app.template_filter('today')
 def today_filter(value):
