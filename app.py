@@ -17,33 +17,27 @@ import pandas as pd
 from werkzeug.utils import secure_filename
 from math import ceil
 
-# Load .env if present
+# ✅ Load .env if present
 load_dotenv('.env') if os.path.exists('.env') else None
 
+# ✅ Flask app setup
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
-
-
-@app.template_filter('today')
-def today_filter(value):
-    return value.strftime('%Y-%m-%d') if value else datetime.today().strftime('%Y-%m-%d')
-
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev_secret')
-DB_USER = os.getenv('DB_USER', 'root')
-DB_PASS = os.getenv('DB_PASS', '')
-DB_HOST = os.getenv('DB_HOST', 'localhost')
-DB_PORT = os.getenv('DB_PORT', '3306')
-DB_NAME = os.getenv('DB_NAME', 'dairy_db_v3')
-UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'static/logos')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', 'static/logos')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'  # ✅ SQLite only
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# ✅ Ensure upload folder exists
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-db = SQLAlchemy(app)
-login_manager = LoginManager(app)
+# ✅ SQLAlchemy and Login setup
+db = SQLAlchemy()
+db.init_app(app)
+
+login_manager = LoginManager()
 login_manager.login_view = 'login'
+login_manager.init_app(app)
+
 
 # -------------------- MODELS --------------------
 class User(db.Model, UserMixin):
