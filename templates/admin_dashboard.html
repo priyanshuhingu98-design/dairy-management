@@ -1,0 +1,10 @@
+
+{% extends 'base.html' %}
+{% block content %} 
+<div style="background-color: #E0F2F7; padding: 20px; border-radius: 10px;"><div style="background-color: #babbb4; padding: 20px; border-radius: 10px;">
+ 
+
+<h3>Admin Dashboard</h3>
+<a class="btn btn-success mb-3" href="{{ url_for('add_dairy') }}">Add Dairy</a>
+<table class="table"><thead><tr><th>Name</th><th>Username</th><th>Logo</th><th>Actions</th></tr></thead><tbody>{% for d in dairies %}<tr><td>{{ d.name }}</td><td>{{ d.username }}</td><td>{% if d.logo_path %}<img src="{{ '/' + dairy.logo if dairy.logo else '/static/logos/placeholder.png' }}"style='height:40px'>{% else %} - {% endif %}</td><td><a class="btn btn-sm btn-primary" href="{{ url_for('admin_view_dairy', did=d.id) }}">Switch/View</a></td></tr>{% endfor %}</tbody></table>
+{% endblock %}

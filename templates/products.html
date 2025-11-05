@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="background-color: #E0F2F7; padding: 20px; border-radius: 10px;">
+  <div style="background-color: #9dcce7; padding: 20px; border-radius: 10px;">
+
+    <div class="d-flex justify-content-between mb-3">
+      <h3><mark>Products - {{ dairy.name }}</mark></h3>
+      <a href="{{ url_for('add_product') }}" class="btn btn-success">Add Product</a>
+    </div><br>
+
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Unit</th>
+            <th>Cost</th>
+            <th>Sell</th>
+            <th>Min Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in products %}
+          <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.unit }}</td>
+            <td>₹{{ '%.2f'|format(p.cost_price) }}</td>
+            <td>₹{{ '%.2f'|format(p.sell_price) }}</td>
+            <td>{{ p.min_stock }}</td>
+            <td class="d-flex gap-2">
+              <a class="btn btn-sm btn-primary" href="{{ url_for('edit_product', pid=p.id) }}">Edit</a>
+              {% if current_user.is_authenticated: %}
+              <form method="post" action="{{ url_for('delete_product', pid=p.id) }}"
+                    onsubmit="return confirm('Delete product?')">
+                <button class="btn btn-sm btn-danger">Delete</button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

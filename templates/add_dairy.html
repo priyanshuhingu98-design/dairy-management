@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<h3> Add Dairy</h3>
+
+</div>
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3"><label class="form-label">Name</label><input name="name" class="form-control" required></div>
+  <div class="mb-3"><label class="form-label">Username</label><input name="username" class="form-control" required></div>
+  <div class="mb-3"><label class="form-label">Password</label><input name="password" class="form-control" required></div>
+  <div class="mb-3"><label class="form-label">Logo (optional)</label><input type="file" name="logo" class="form-control"></div>
+  <button class="btn btn-primary">Add</button>
+</form>
+{% endblock %}

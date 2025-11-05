@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="background-color: #E0F2F7; padding: 20px; border-radius: 10px;">
+  <div style="background-color: #9dcce7; padding: 20px; border-radius: 10px;">
+
+    <h3>{{ action }} Product - {{ dairy.name }}</h3>
+    <div style="background-color: #9dcce7; padding: 40px; border-radius: 30px;">
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input name="name" class="form-control" value="{{ product.name if product else '' }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Unit</label>
+          <input name="unit" class="form-control" value="{{ product.unit if product else 'litre' }}">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Date</label>
+          <input type="date" name="date" class="form-control" value="{{ product.date|today }}">
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Cost Price</label>
+            <input name="cost_price" class="form-control" value="{{ product.cost_price if product else '' }}" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Sell Price</label>
+            <input name="sell_price" class="form-control" value="{{ product.sell_price if product else '' }}" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Min Stock</label>
+            <input name="min_stock" class="form-control" value="{{ product.min_stock if product else 0 }}">
+          </div>
+        </div>
+        <button class="btn btn-primary">{{ action }}</button>
+        <a href="{{ url_for('products') }}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

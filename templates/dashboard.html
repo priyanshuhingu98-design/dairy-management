@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="background-color: #E0F2F7; padding: 20px; border-radius: 10px;">
+  <div style="background-color: #babbb4; padding: 20px; border-radius: 10px;">
+
+    <h2><mark>Dashboard - {{ dairy.name }}</mark></h2><br>
+
+    <!-- ✅ Date Range Filter -->
+    <form class="row align-items-end g-3 mb-3" method="get" action="{{ url_for('dashboard') }}">
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">From Date</label>
+        <input type="date" name="from" class="form-control" value="{{ f1 }}">
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <label class="form-label">To Date</label>
+        <input type="date" name="to" class="form-control" value="{{ f2 }}">
+      </div>
+      <div class="col-md-2 col-sm-12 d-flex align-items-end">
+        <button class="btn btn-primary w-100">Filter</button>
+      </div>
+    </form>
+
+    <!-- ✅ Summary Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4 col-sm-12">
+        <div class="card p-3 text-center shadow-sm rounded">
+          <h6>Total Stock Value</h6>
+          <h4>₹{{ '%.2f'|format(total_stock_value) }}</h4>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <div class="card p-3 text-center shadow-sm rounded">
+          <h6>Revenue</h6>
+          <h4>₹{{ '%.2f'|format(total_revenue) }}</h4>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <div class="card p-3 text-center shadow-sm rounded">
+          <h6>Profit</h6>
+          <h4>₹{{ '%.2f'|format(profit) }}</h4>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Product Stock Summary Table -->
+    <h3 class="mt-4">Product Stock Summary ({{ f1 }} to {{ f2 }})</h3>
+    <div class="card p-3 mt-3 shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Product Name</th>
+              <th>Stock In</th>
+              <th>Stock Out</th>
+              <th>Closing Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in product_stock_summary %}
+            <tr>
+              <td>{{ item.name }}</td>
+              <td>{{ '%.2f'|format(item.stock_in) }}</td>
+              <td>{{ '%.2f'|format(item.stock_out) }}</td>
+              <td>{{ '%.2f'|format(item.closing_stock) }}</td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="4" class="text-center text-muted">No data found for selected date range</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

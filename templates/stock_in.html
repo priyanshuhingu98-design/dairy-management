@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="background-color: #E0F2F7; padding: 20px; border-radius: 10px;">
+  <div style="background-color: #9dcce7; padding: 20px; border-radius: 10px;">
+
+    <div class="d-flex justify-content-between mb-3">
+      <h3><mark>Stock In - {{ dairy.name }}</mark></h3>
+    </div><br>
+
+    <!-- ✅ Stock In Form -->
+    <form method="post" class="row g-3 mb-4">
+      <!-- Product Dropdown -->
+      <div class="col-md-4">
+        <label class="form-label">Product</label>
+        <select name="product_id" id="productSelect" class="form-select" required onchange="updateCostPrice()">
+          <option value="">-- Select Product --</option>
+          {% for p in products %}
+            <option value="{{ p.id }}" data-cost="{{ p.cost_price }}">{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Quantity -->
+      <div class="col-md-2">
+        <label class="form-label">Qty</label>
+        <input type="number" name="qty" class="form-control" required>
+      </div>
+
+      <!-- Cost Price (auto-filled, readonly) -->
+      <div class="col-md-2">
+        <label class="form-label">Cost Price</label>
+        <input type="text" name="cost_price" id="costPrice" class="form-control" required readonly>
+      </div>
+
+      <!-- Date -->
+      <div class="col-md-2">
+        <label class="form-label">Date</label>
+        <input type="date" name="date" class="form-control" value="{{ today }}" required>
+      </div>
+
+      <!-- Remarks -->
+      <div class="col-md-2">
+        <label class="form-label">Remarks</label>
+        <input type="text" name="remarks" class="form-control">
+      </div>
+
+      <!-- Submit Button -->
+      <div class="col-12">
+        <button class="btn btn-success">Add Stock</button>
+      </div>
+    </form>
+
+    <!-- ✅ Recent Stock In Table -->
+    <h5 class="mt-4 mb-3">Recent Stock In</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Cost Price</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in trans %}
+          <tr>
+            <td>{{ t.date }}</td>
+            <td>{{ t.product.name }}</td>
+            <td>{{ t.qty }}</td>
+            <td>₹{{ '%.2f'|format(t.cost_price) }}</td>
+            <td>{{ t.remarks }}</td>
+            <td>
+              <a class="btn btn-sm btn-primary" href="{{ url_for('edit_stock_in', sid=t.id) }}">Edit</a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-muted">No stock entries found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ✅ JavaScript for Auto-Fill -->
+<script>
+function updateCostPrice() {
+  const select = document.getElementById("productSelect");
+  const selectedOption = select.options[select.selectedIndex];
+  const cost = selectedOption.getAttribute("data-cost");
+  document.getElementById("costPrice").value = cost ? cost : '';
+}
+</script>
+{% endblock %}

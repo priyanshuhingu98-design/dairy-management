@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div style="background-color: #E0F2F7; padding: 20px; border-radius: 10px;"><div style="background-color: #9dcce7;; padding: 20px; border-radius: 10px;">
+
+<h3>Edit Stock In - {{ dairy.name }}</h3>
+<form method="post">
+  <div class="mb-3"><label class="form-label">Product</label><input class="form-control" value="{{ entry.product.name }}" readonly></div>
+  <div class="mb-3"><label class="form-label">Qty</label><input name="qty" class="form-control" value="{{ entry.qty }}"></div>
+  <div class="mb-3"><label class="form-label">Cost Price</label><input name="cost_price" class="form-control" value="{{ entry.cost_price }}"></div>
+  <div class="mb-3"><label class="form-label">Date</label><input type="date" name="date" class="form-control" value="{{ entry.date }}"></div>
+  <div class="mb-3"><label class="form-label">Remarks</label><input name="remarks" class="form-control" value="{{ entry.remarks }}"></div>
+  <button class="btn btn-primary">Save</button>
+</form>
+{% endblock %}
